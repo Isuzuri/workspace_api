@@ -1,0 +1,40 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+
+development:
+  <<: *default
+  database: workspace_api_development
+  username: workspace_api
+  password: 9ed3f4
+  host: localhost
+  port: 5432
+
+test:
+  <<: *default
+  database: workspace_api_test
+  username: workspace_api
+  password: 9ed3f4
+  host: localhost
+  port: 5432
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: workspace_api_production
+    username: workspace_api
+    password: <%= ENV["WORKSPACE_API_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: workspace_api_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: workspace_api_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: workspace_api_production_cable
+    migrations_paths: db/cable_migrate
