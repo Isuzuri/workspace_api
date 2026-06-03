@@ -35,10 +35,10 @@ gem "image_processing", "~> 1.2"
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 gem "rack-cors"
 
-gem 'redis'
-gem "dotenv-rails", groups: [:development, :test, :production]
-gem 'devise'
-gem 'devise-jwt'
+gem "redis"
+gem "dotenv-rails", groups: [ :development, :test, :production ]
+gem "devise"
+gem "devise-jwt"
 gem "panko_serializer"
 gem "kaminari"
 
