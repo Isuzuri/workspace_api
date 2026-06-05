@@ -4,7 +4,15 @@ Rails.application.routes.draw do
     sign_out: "logout",
     registration: "signup"
   }, controllers: {
-    registration: "users/registrations",
+    registrations: "users/registrations",
     sessions: "users/sessions"
   }
+
+  namespace :api do
+    namespace :v1 do
+      resources :workspaces do
+        resources :memberships
+      end
+    end
+  end
 end
