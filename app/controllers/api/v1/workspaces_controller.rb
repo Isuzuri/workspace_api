@@ -17,7 +17,7 @@ module Api
 
       # POST /workspaces
       def create
-        @workspace = current_user.owned_workspaces.build(workspace_params)
+        @workspace = current_user.workspaces.build(workspace_params)
 
         if @workspace.save
           render json: @workspace, status: :created
