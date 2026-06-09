@@ -31,8 +31,6 @@ module Api
         render json: "Deleted"
       end
 
-
-
       private
 
       def set_workspace

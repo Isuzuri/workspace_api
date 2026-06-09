@@ -1,33 +1,38 @@
 module Api
   module V1
     class MembershipsController < ApplicationController
-      before_action :set_workspace, only: %i[ invite exclude change_role ]
+      before_action :set_workspace, only: %i[ index invite exclude change_role ]
+
+      def index
+        authorize @workspace, :index?
+        render json: @workspace.memberships
+      end
 
       def invite
-        authorize @workspace
-
         membership = @workspace.memberships.find_by(user: user)
         return membership if membership
+        authorize membership
 
         @workspace.memberships.create!(user: user, role: role)
+        render json: { status: 'ok'}
       end
 
       def exclude
-        authorize @workspace
-
-        membership = @workspace.memberships.find_by(user: user)
-        return unless membership
+        membership = @workspace.memberships.find(params[:id])
+        raise ActiveRecord::RecordNotFound unless membership
+        authorize membership
 
         membership.destroy!
+        render json: { status: 'ok'}
       end
 
       def change_role
-        authorize @workspace
-
-        membership = @workspace.memberships.find_by(user: user)
-        return unless membership
+        membership = @workspace.memberships.find(params[:id])
+        raise ActiveRecord::RecordNotFound unless membership
+        authorize membership
 
         membership.update!(role: role)
+        render json: { status: 'ok'}
       end
 
       private 

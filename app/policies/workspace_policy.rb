@@ -15,18 +15,6 @@ class WorkspacePolicy < ApplicationPolicy
     membership&.owner?
   end
 
-  def invite?
-    membership.present?
-  end
-
-  def exclude?
-    membership&.admin? || membership&.owner?
-  end
-
-  def change_role?
-    membership&.owner?
-  end
-
   private
 
   def membership
