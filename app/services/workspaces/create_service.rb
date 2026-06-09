@@ -7,7 +7,7 @@ class Workspaces::CreateService
   def call
     Workspace.transaction do
       workspace = Workspace.create!(@params)
-      workspace.memberships.create!(user: @user, role: :owner )
+      workspace.memberships.create!(user: @user, role: :owner)
       workspace
     end
   end

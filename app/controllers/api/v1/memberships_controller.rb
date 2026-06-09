@@ -14,7 +14,7 @@ module Api
         authorize membership
 
         @workspace.memberships.create!(user: user, role: role)
-        render json: { status: 'ok'}
+        render json: { status: "ok" }
       end
 
       def exclude
@@ -23,7 +23,7 @@ module Api
         authorize membership
 
         membership.destroy!
-        render json: { status: 'ok'}
+        render json: { status: "ok" }
       end
 
       def change_role
@@ -32,16 +32,16 @@ module Api
         authorize membership
 
         membership.update!(role: role)
-        render json: { status: 'ok'}
+        render json: { status: "ok" }
       end
 
-      private 
+      private
 
       def set_workspace
         @workspace = current_user.workspaces.find(params[:workspace_id])
       end
 
-      def user 
+      def user
         @user ||= User.find(params[:user_id])
       end
 

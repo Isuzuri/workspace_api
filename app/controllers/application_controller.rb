@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
   before_action :authenticate_user!
-  
+
   include Pundit::Authorization
   include ErrorHandler
 
@@ -16,7 +16,7 @@ class ApplicationController < ActionController::API
 
   # def paginate(collection, serializer)
   #     {
-  #         items: serialize_many(collection, serializer), 
+  #         items: serialize_many(collection, serializer),
   #         meta: {
   #             current_page: collection.current_page,
   #             next_page: collection.next_page,

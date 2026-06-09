@@ -41,7 +41,7 @@ gem "devise"
 gem "devise-jwt"
 gem "panko_serializer"
 gem "kaminari"
-gem 'pundit'
+gem "pundit"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
