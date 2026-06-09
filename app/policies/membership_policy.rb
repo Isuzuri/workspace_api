@@ -1,6 +1,6 @@
 class MembershipPolicy < ApplicationPolicy
   def invite?
-    acting_membership.present?
+    acting_membership&.owner? || (acting_membership&.admin? && !record&.owner?)
   end
 
   def exclude?
