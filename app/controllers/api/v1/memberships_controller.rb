@@ -1,55 +1,48 @@
 module Api
   module V1
     class MembershipsController < ApplicationController
-      before_action :set_membership, only: %i[ show update destroy ]
+      before_action :set_workspace, only: %i[ invite exclude change_role ]
 
-      # GET /memberships
-      def index
-        @memberships = Membership.all
+      def invite
+        authorize @workspace
 
-        render json: @memberships
+        membership = @workspace.memberships.find_by(user: user)
+        return membership if membership
+
+        @workspace.memberships.create!(user: user, role: role)
       end
 
-      # GET /memberships/1
-      def show
-        render json: @membership
+      def exclude
+        authorize @workspace
+
+        membership = @workspace.memberships.find_by(user: user)
+        return unless membership
+
+        membership.destroy!
       end
 
-      # POST /memberships
-      def create
-        @membership = current_user.memberships.build(membership_params)
+      def change_role
+        authorize @workspace
 
-        if @membership.save
-          render json: @membership, status: :created
-        else
-          render json: @membership.errors, status: :unprocessable_content
-        end
+        membership = @workspace.memberships.find_by(user: user)
+        return unless membership
+
+        membership.update!(role: role)
       end
 
-      # PATCH/PUT /memberships/1
-      def update
-        if @membership.update(membership_params)
-          render json: @membership
-        else
-          render json: @membership.errors, status: :unprocessable_content
-        end
+      private 
+
+      def set_workspace
+        @workspace = current_user.workspaces.find(params[:workspace_id])
       end
 
-      # DELETE /memberships/1
-      def destroy
-        @membership.destroy!
+      def user 
+        @user ||= User.find(params[:user_id])
       end
 
-      private
-        # Use callbacks to share common setup or constraints between actions.
-        def set_membership
-          @membership = Membership.find(params.expect(:id))
-        end
-
-        # Only allow a list of trusted parameters through.
-        def membership_params
-          params.expect(membership: [ :role ])
-        end
+      def role
+        params[:role]
+      end
     end
   end
 end
