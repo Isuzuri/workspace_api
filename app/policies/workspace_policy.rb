@@ -15,6 +15,10 @@ class WorkspacePolicy < ApplicationPolicy
     membership&.owner?
   end
 
+  def create_project?
+    membership&.admin? || membership&.owner?
+  end
+
   private
 
   def membership

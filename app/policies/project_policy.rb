@@ -1,18 +1,22 @@
 class ProjectPolicy < ApplicationPolicy
   def index?
-    project_memberships.present?
+    project_membership.present?
   end
 
   def show?
-    project_memberships.present?
+    project_membership.present?
+  end
+
+  def create?
+    true
   end
 
   def update?
-    project_memberships&.admin? || project_memberships&.owner?
+    project_membership&.admin? || project_membership&.owner?
   end
 
   def destroy?
-    project_memberships&.owner?
+    project_membership&.owner?
   end
 
   private

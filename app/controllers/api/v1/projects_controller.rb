@@ -1,29 +1,35 @@
 module Api
   module V1
     class ProjectsController < ApplicationController
-      before_action :set_workspace, only: %i[ index ]
+      before_action :set_workspace, only: %i[ index create ]
       before_action :set_project, only: %i[ show update destroy ]
 
       def index
+        authorize @workspace
+
         @projects = @workspace.projects
         render json: @projects
       end
 
       def show
+        authorize @project
         render json: @project
       end
 
       def create
-        @project = Project::CreateService.new(user: current_user, params: project_params).call
+        authorize @workspace, :create_project?, policy_class: Workspace
+        @project = Project::CreateService.new(user: current_user, workspace: @workspace, params: project_params).call
         render json: @project, status: :created
       end
 
       def update
-        @project.update!(workspace_params)
+        authorize @project
+        @project.update!(project_params)
         render json: @project
       end
 
       def destroy
+        authorize @project
         @project.destroy!
         render json: "Deleted"
       end
@@ -35,7 +41,7 @@ module Api
       end
 
       def set_project
-        @project = @workspace.project.find(params[:id])
+        @project = @workspace.projects.find(params[:id])
       end
 
       def project_params
