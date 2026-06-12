@@ -8,4 +8,8 @@ class User < ApplicationRecord
 
   has_many :memberships
   has_many :workspaces, through: :memberships
+
+  has_many :project_memberships
+  has_many :projects, through: :project_memberships
+  has_many :assigned_tasks, class_name: "Task", foreign_key: :assignee_id
 end
