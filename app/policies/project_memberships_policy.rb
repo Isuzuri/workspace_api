@@ -1,4 +1,4 @@
-class MembershipPolicy < ApplicationPolicy
+class ProjectMembershipsPolicy < ApplicationPolicy
   def index?
     acting_membership.present?
   end
@@ -18,10 +18,10 @@ class MembershipPolicy < ApplicationPolicy
   private
 
   def acting_membership
-    workspace.memberships.find_by(user: user)
+    project.project_memberships.find_by(user: user)
   end
 
-  def workspace
-    record.is_a?(Workspace) ? record : record.workspace
+  def project
+    record.is_a?(Project) ? record : record.project
   end
 end

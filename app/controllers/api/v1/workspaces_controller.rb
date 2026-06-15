@@ -28,7 +28,7 @@ module Api
         authorize @workspace
 
         @workspace.destroy!
-        render json: "Deleted"
+        head :no_content
       end
 
       private

@@ -1,52 +1,44 @@
 module Api
   module V1
     class MembershipsController < ApplicationController
-      before_action :set_workspace, only: %i[ index invite exclude change_role ]
+      before_action :set_workspace, only: %i[ index create update destroy ]
 
       def index
-        authorize @workspace, :index?
+        authorize @workspace, policy_class: MembershipPolicy
         render json: @workspace.memberships
       end
 
-      def invite
-        membership = @workspace.memberships.find_by(user: user)
-        return membership if membership
-        authorize membership
+      def create
+        return head :no_content if @workspace.memberships.exists?(user_id: params[:user_id])
 
-        @workspace.memberships.create!(user: user, role: role)
-        render json: { status: "ok" }
+        authorize @workspace, policy_class: MembershipPolicy
+
+        @workspace.memberships.create!(user_id: params[:user_id], role: params[:role])
+        head :no_content
       end
 
-      def exclude
+      def update
         membership = @workspace.memberships.find(params[:id])
-        raise ActiveRecord::RecordNotFound unless membership
-        authorize membership
+
+        authorize membership, policy_class: MembershipPolicy
+
+        membership.update!(role: params[:role])
+        head :no_content
+      end
+
+      def destroy
+        membership = @workspace.memberships.find(params[:id])
+
+        authorize membership, policy_class: MembershipPolicy
 
         membership.destroy!
-        render json: { status: "ok" }
-      end
-
-      def change_role
-        membership = @workspace.memberships.find(params[:id])
-        raise ActiveRecord::RecordNotFound unless membership
-        authorize membership
-
-        membership.update!(role: role)
-        render json: { status: "ok" }
+        head :no_content
       end
 
       private
 
       def set_workspace
         @workspace = current_user.workspaces.find(params[:workspace_id])
-      end
-
-      def user
-        @user ||= User.find(params[:user_id])
-      end
-
-      def role
-        params[:role]
       end
     end
   end

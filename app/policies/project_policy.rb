@@ -8,7 +8,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def create?
-    true
+    workspace_membership&.admin? || workspace_membership&.owner?
   end
 
   def update?
@@ -23,5 +23,9 @@ class ProjectPolicy < ApplicationPolicy
 
   def project_membership
     record.project_memberships.find_by(user: user)
+  end
+
+  def workspace_membership
+    record.workspace&.memberships&.find_by(user: user)
   end
 end

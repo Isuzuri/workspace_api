@@ -1,13 +1,13 @@
 class Projects::CreateService
-  def initialize(user:, workspace:, params:)
+  def initialize(user:, params:)
     @user = user
-    @workspace = workspace
     @params = params
   end
 
   def call
     Project.transaction do
-      project = @workspace.projects.create!(@params)
+      workspace = Workspace.find(@params[:workspace_id])
+      project = workspace.projects.create!(@params.slice(:name, :description))
       project.project_memberships.create!(user: @user, role: :owner)
       project
     end

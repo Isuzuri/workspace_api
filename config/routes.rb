@@ -11,15 +11,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :workspaces do
-        resources :memberships, only: [ :index ] do
-          collection do
-            post :invite
-          end
-          member do
-            delete :exclude
-            patch :change_role
-          end
-        end
+        resources :memberships
+      end
+      resources :projects do
+        resources :project_memberships
       end
     end
   end
