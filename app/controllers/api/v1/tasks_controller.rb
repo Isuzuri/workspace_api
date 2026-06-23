@@ -5,7 +5,7 @@ module Api
       before_action :set_task, only: %i[show update destroy]
 
       def index
-        @tasks = @project.tasks
+        @tasks = filtered_tasks(@project.tasks)
         render json: @tasks
       end
 
@@ -46,6 +46,14 @@ module Api
 
       def task_params
         params.require(:task).permit(:title, :description, :priority, :status, :deadline, :assignee_id)
+      end
+
+      def filtered_tasks(scope)
+        scope
+          .by_status(params[:status])
+          .by_priority(params[:priority])
+          .by_deadline_less_than(params[:date])
+          .by_assignee(params[:user_id])
       end
     end
   end
