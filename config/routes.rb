@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       end
       resources :projects do
         resources :project_memberships
+        resources :tasks
       end
     end
   end

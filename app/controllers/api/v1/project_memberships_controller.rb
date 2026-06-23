@@ -42,7 +42,7 @@ module Api
       end
 
       def project_membership_params
-        require(:project_membership).permit(:user_id, :role)
+        params.require(:project_membership).permit(:user_id, :role)
       end
     end
   end

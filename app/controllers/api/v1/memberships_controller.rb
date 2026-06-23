@@ -42,7 +42,7 @@ module Api
       end
 
       def membership_params
-        params.requie(:membership).permit(:user_id, :role)
+        params.require(:membership).permit(:user_id, :role)
       end
     end
   end

@@ -15,6 +15,10 @@ class ProjectPolicy < ApplicationPolicy
     project_membership&.owner?
   end
 
+  def create_tasks?
+    project_membership&.admin? || project_membership&.owner?
+  end
+
   private
 
   def project_membership

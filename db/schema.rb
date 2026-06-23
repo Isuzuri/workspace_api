@@ -47,11 +47,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_12_115905) do
     t.bigint "assignee_id"
     t.datetime "created_at", null: false
     t.date "deadline"
-    t.string "description"
+    t.string "description" 
     t.integer "priority"
     t.bigint "project_id", null: false
     t.integer "status", default: 0, null: false
-    t.string "title", null: false
+    t.string "title", null: false 
     t.datetime "updated_at", null: false
     t.index ["assignee_id"], name: "index_tasks_on_assignee_id"
     t.index ["project_id"], name: "index_tasks_on_project_id"
