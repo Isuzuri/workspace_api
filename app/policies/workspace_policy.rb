@@ -1,8 +1,4 @@
 class WorkspacePolicy < ApplicationPolicy
-  def index?
-    membership.present?
-  end
-
   def show?
     membership.present?
   end
@@ -13,6 +9,10 @@ class WorkspacePolicy < ApplicationPolicy
 
   def destroy?
     membership&.owner?
+  end
+
+  def create_project?
+    membership&.admin? || membership&.owner?
   end
 
   private

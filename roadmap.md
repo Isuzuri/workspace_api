@@ -9,11 +9,7 @@
 - Workspace has_many :users, through: :memberships
 ## Контроллеры: 
 - Api::V1::WorkspacesController (CRUD)
-<<<<<<< HEAD
 - Api::V1::MembershipsController (index, create = invite, destroy = remove, update = change_role)
-=======
-- Api::V1::MembershipsController (index, invite, remove, change_role)
->>>>>>> 8fa210631c20d5dd53e26fc9385fbcfbfea1086e
 ## Pundit: WorkspacePolicy — только owner может удалять, все участники могут приглашать, все участники могут читать
 ## Роуты: вложенные resources :workspaces с resources :memberships и collection :member для remove и change_role
 
@@ -28,15 +24,9 @@
 - Project has_many :users, through: :project_memberships
 - User has_many :projects, through: :project_memberships
 ## Контроллеры: 
-<<<<<<< HEAD
 - API::V1::ProjectsController (CRUD)
 - API::V1::TasksController (CRUD)
 - API::V1::ProjectMembershipsController (index, create = invite, destroy = remove, update = change_role)
-=======
-- API::V1::ProjectsController (CRUD) - вложено в workspace
-- API::V1::TasksController (CRUD) - вложено в project
-- API::V1::ProjectMembershipsController (index, invite, remove, change_role)
->>>>>>> 8fa210631c20d5dd53e26fc9385fbcfbfea1086e
 ## Pundit: 
 - таблица прав и ролей в miro => https://miro.com/app/board/uXjVLa8g2GA=/
 ## Scopes: 

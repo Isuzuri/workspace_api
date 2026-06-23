@@ -15,9 +15,8 @@ module Api
       end
 
       def create
-        @project  = Project.new(project_params)
-
-        authorize @project
+        workspace = Workspace.find(params[:project][:workspace_id])
+        authorize workspace, :create_project?
 
         @project = Projects::CreateService.new(user: current_user, params: project_params).call
         render json: @project, status: :created

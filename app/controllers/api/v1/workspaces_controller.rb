@@ -9,6 +9,7 @@ module Api
       end
 
       def show
+        authorize @workspace
         render json: @workspace
       end
 

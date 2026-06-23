@@ -4,23 +4,23 @@ module Api
       before_action :set_workspace, only: %i[ index create update destroy ]
 
       def index
-        authorize @workspace, policy_class: MembershipPolicy
+        authorize @workspace
         render json: @workspace.memberships
       end
 
       def create
         return head :no_content if @workspace.memberships.exists?(user_id: params[:user_id])
 
-        authorize @workspace, policy_class: MembershipPolicy
+        authorize @workspace
 
-        @workspace.memberships.create!(user_id: params[:user_id], role: params[:role])
+        @workspace.memberships.create!(membership_params)
         head :no_content
       end
 
       def update
         membership = @workspace.memberships.find(params[:id])
 
-        authorize membership, policy_class: MembershipPolicy
+        authorize membership
 
         membership.update!(role: params[:role])
         head :no_content
@@ -29,7 +29,7 @@ module Api
       def destroy
         membership = @workspace.memberships.find(params[:id])
 
-        authorize membership, policy_class: MembershipPolicy
+        authorize membership
 
         membership.destroy!
         head :no_content
@@ -39,6 +39,10 @@ module Api
 
       def set_workspace
         @workspace = current_user.workspaces.find(params[:workspace_id])
+      end
+
+      def membership_params
+        params.requie(:membership).permit(:user_id, :role)
       end
     end
   end
